@@ -44,7 +44,7 @@ struct Cliente {
 //VARIABLES GLOBALES
 int idProducto=0, cantidad=0, idBusqueda = 0, contador = 0, seleccionMenu = 0, seleccionMetodoPago = 0;
 float precioCompra=0, precioVenta=0;
-string nombreProducto, nombreMetodoPago;
+string nombreProducto, nombreMetodoPago, nombreBusqueda;
 char continuar = 's';
 Producto productos[100];
 
@@ -153,10 +153,12 @@ void busquedaProductos(){
     system("cls");
     cout << "Ingrese el codigo del producto: ";
     cin >> idBusqueda;
+    cout << "Ingrese el nombre del producto: ";
+    cin >> nombreBusqueda;
     ifstream acceder("inventario_punto_venta.txt");
     while (!acceder.eof()) {
         acceder >> idProducto>>nombreProducto>>precioCompra>>precioVenta>>cantidad;
-        if(idProducto == idBusqueda && !acceder.eof()){
+        if((idProducto == idBusqueda && nombreProducto == nombreBusqueda) && !acceder.eof()){
             cout << endl<<"##################################" << endl;
             cout << "           RESULTADO";
             cout << endl<<"##################################" << endl;
@@ -166,7 +168,13 @@ void busquedaProductos(){
             cout << "Precio de venta: " << precioVenta << endl;
             cout << "Cantidad: " << cantidad << endl;
             cout << "##################################" << endl;
-        }        
+            return;
+        } else if((idProducto != idBusqueda || nombreProducto != nombreBusqueda) && !acceder.eof()){
+            cout << endl<<"##################################" << endl;
+            cout << "           NO SE ENCONTRO";
+            cout << endl<<"##################################" << endl;
+            return;
+        }       
     }
     acceder.close();
     system("pause");
